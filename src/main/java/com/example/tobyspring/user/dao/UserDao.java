@@ -7,9 +7,7 @@ import java.sql.*;
 public class UserDao {
 
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Class.forName("org.h2.Driver");
-        Connection conn = DriverManager.getConnection(
-                "jdbc:h2:tcp://localhost/~/tobyspring", "sa", "");
+        Connection conn = getConnection(); // 커넥션을 생성하는 관심사를 메서드로 분리한다.
 
         PreparedStatement pstmt = conn.prepareStatement(
                 "insert into users(id, name, password) values (?, ?, ?)"
@@ -26,9 +24,7 @@ public class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Class.forName("org.h2.Driver");
-        Connection conn = DriverManager.getConnection(
-                "jdbc:h2:tcp://localhost/~/tobyspring", "sa", "");
+        Connection conn = getConnection();
 
         PreparedStatement pstmt = conn.prepareStatement(
                 "select * from users where id = ?"
@@ -47,6 +43,13 @@ public class UserDao {
         conn.close();
 
         return user;
+    }
+
+    // 중복되는 부분을 메서드로 분리하여 관심사를 분리한다.
+    private Connection getConnection() throws ClassNotFoundException, SQLException {
+        Class.forName("org.h2.Driver");
+        return DriverManager.getConnection(
+                "jdbc:h2:tcp://localhost/~/tobyspring", "sa", "");
     }
 
     // 테스트 코드
