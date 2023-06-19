@@ -1,4 +1,4 @@
-package com.example.tobyspring.user.dao.factory_method;
+package com.example.tobyspring.user.dao.separate_class;
 
 import com.example.tobyspring.user.domain.User;
 
@@ -8,12 +8,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * 상속을 통한 확장: FactoryMethod 패턴으로 만드는 UserDao
+ * 클래스의 분리: 관심사가 다른 코드를 서로 다른 클래스로 분리
  */
-public abstract class UserDao {
+public class UserDao {
+
+    private SimpleConnectionMaker simpleConnectionMaker;
+
+    public UserDao() {
+        this.simpleConnectionMaker = new SimpleConnectionMaker();
+    }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection conn = getConnection(); // 커넥션을 생성하는 관심사를 메서드로 분리한다.
+        Connection conn = simpleConnectionMaker.makeNewConnection();
 
         PreparedStatement pstmt = conn.prepareStatement(
                 "insert into users(id, name, password) values (?, ?, ?)"
@@ -30,7 +36,7 @@ public abstract class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection conn = getConnection();
+        Connection conn = simpleConnectionMaker.makeNewConnection();
 
         PreparedStatement pstmt = conn.prepareStatement(
                 "select * from users where id = ?"
@@ -50,7 +56,4 @@ public abstract class UserDao {
 
         return user;
     }
-
-    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
-
 }
