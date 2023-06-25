@@ -13,12 +13,12 @@ import org.springframework.context.annotation.Configuration;
 public class DaoFactoryV3 {
 
     @Bean
-    public UserDaoV3 userDao() {
-        return new UserDaoV3(connectionMaker());
+    public UserDaoV3 userDaoV3() {
+        return new UserDaoV3(connectionMakerV2());
     }
 
     @Bean
-    public ConnectionMakerV2 connectionMaker() {
+    public ConnectionMakerV2 connectionMakerV2() {
         return new ConnectionMakerV2Impl();
     }
 
