@@ -18,19 +18,19 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	implementation("org.projectlombok:lombok:1.18.24")
-	implementation("org.springframework:spring-context:5.3.22")
-	implementation("org.springframework:spring-context-support:5.3.22")
+	implementation("org.projectlombok:lombok:1.18.26")
+	implementation("org.springframework:spring-context:6.0.9")
+	implementation("org.springframework:spring-context-support:6.0.6")
 	implementation("com.h2database:h2")
-	implementation("org.springframework:spring-jdbc:5.3.22")
+	implementation("org.springframework:spring-jdbc:6.0.6")
 	implementation("javax.mail:mail:1.4.7")
 	implementation("javax.activation:activation:1.1.1")
 
-	testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
-	testImplementation("org.assertj:assertj-core:3.23.1")
-	testImplementation("org.springframework:spring-test:5.3.22")
+	testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+	testImplementation("org.assertj:assertj-core:3.24.2")
+	testImplementation("org.springframework:spring-test:6.0.6")
 
-	annotationProcessor("org.projectlombok:lombok:1.18.24")
+	annotationProcessor("org.projectlombok:lombok:1.18.26")
 }
 
 tasks.withType<Test> {
