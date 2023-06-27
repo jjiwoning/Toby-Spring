@@ -9,15 +9,15 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Spring의 Bean Factory가 사용할 수 있는 설정 정보
  */
-@Configuration
+//@Configuration
 public class DaoFactoryV3 {
 
-    @Bean
+    //@Bean
     public UserDaoV3 userDaoV3() {
         return new UserDaoV3(connectionMakerV2());
     }
 
-    @Bean
+    //@Bean
     public ConnectionMakerV2 connectionMakerV2() {
         return new ConnectionMakerV2Impl();
     }
