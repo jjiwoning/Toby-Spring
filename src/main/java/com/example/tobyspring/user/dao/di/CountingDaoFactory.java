@@ -3,20 +3,20 @@ package com.example.tobyspring.user.dao.di;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+//@Configuration
 public class CountingDaoFactory {
 
-    @Bean
+    //@Bean
     public UserDao userDao() {
         return new UserDao(connectionMaker());
     }
 
-    @Bean
+    //@Bean
     public ConnectionMaker connectionMaker() {
         return new CountingConnectionMaker(realConnectionMaker());
     }
 
-    @Bean
+    //@Bean
     public ConnectionMaker realConnectionMaker() {
         return new ConnectionMakerImpl();
     }
