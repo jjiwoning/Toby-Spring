@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.sql.SQLException;
 
@@ -55,5 +56,18 @@ class UserDaoTest {
         userDao.add(user3);
         assertThat(userDao.getCount()).isEqualTo(3);
 
+    }
+
+    @Test
+    @DisplayName("get() 예외 테스트")
+    void getUserFailure() throws SQLException {
+        ApplicationContext ac = new AnnotationConfigApplicationContext(DaoFactory.class);
+        UserDao userDao = ac.getBean("userDao", UserDao.class);
+
+        userDao.deleteAll();
+        assertThat(userDao.getCount()).isEqualTo(0);
+
+        assertThatThrownBy(() -> userDao.get("ex"))
+                .isInstanceOf(EmptyResultDataAccessException.class);
     }
 }
