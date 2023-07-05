@@ -15,12 +15,19 @@ import static org.assertj.core.api.Assertions.*;
 class UserDaoTest {
 
     private UserDao userDao;
+    private User user1;
+    private User user2;
+    private User user3;
 
     // BeforeEach를 통해 미리 UserDao를 세팅하여 각 테스트 메서드 별로 UserDao를 가져오는 과정의 중복 코드를 줄일 수 있다.
+    // User에 대한 픽스처(테스트를 수행하는데 필요한 정보나 오브젝트)를 미리 만들어둘 수 있다.
     @BeforeEach
     private void setUp() {
         ApplicationContext ac = new AnnotationConfigApplicationContext(DaoFactory.class);
         this.userDao = ac.getBean("userDao", UserDao.class);
+        this.user1 = new User("tamtam", "탐탐", "tamtam");
+        this.user2 = new User("tamtam1", "탐탐1", "tamtam1");
+        this.user3 = new User("tamtam2", "탐탐2", "tamtam2");
     }
 
     @Test
@@ -29,25 +36,19 @@ class UserDaoTest {
         userDao.deleteAll();
         assertThat(userDao.getCount()).isEqualTo(0);
 
-        User user = new User("tamtam", "탐탐", "tamtam");
-
-        userDao.add(user);
+        userDao.add(user1);
 
         assertThat(userDao.getCount()).isEqualTo(1);
 
         User findUser = userDao.get("tamtam");
 
-        assertThat(user.getName()).isEqualTo(findUser.getName());
-        assertThat(user.getPassword()).isEqualTo(findUser.getPassword());
+        assertThat(user1.getName()).isEqualTo(findUser.getName());
+        assertThat(user1.getPassword()).isEqualTo(findUser.getPassword());
     }
 
     @Test
     @DisplayName("getCount 테스트")
     void count() throws SQLException {
-        User user1 = new User("tamtam", "탐탐", "tamtam");
-        User user2 = new User("tamtam1", "탐탐1", "tamtam1");
-        User user3 = new User("tamtam2", "탐탐2", "tamtam2");
-
         userDao.deleteAll();
         assertThat(userDao.getCount()).isEqualTo(0);
 
