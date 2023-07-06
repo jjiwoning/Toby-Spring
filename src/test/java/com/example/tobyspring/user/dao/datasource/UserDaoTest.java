@@ -4,16 +4,18 @@ import com.example.tobyspring.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.*;
 
+@SpringBootTest // 스프링 테스트 적용
 class UserDaoTest {
 
+    @Autowired // 스프링 테스트를 넣어두면 현재 설정 정보를 바탕으로 자동으로 주입됨
     private UserDao userDao;
     private User user1;
     private User user2;
@@ -23,8 +25,6 @@ class UserDaoTest {
     // User에 대한 픽스처(테스트를 수행하는데 필요한 정보나 오브젝트)를 미리 만들어둘 수 있다.
     @BeforeEach
     private void setUp() {
-        ApplicationContext ac = new AnnotationConfigApplicationContext(DaoFactory.class);
-        this.userDao = ac.getBean("userDao", UserDao.class);
         this.user1 = new User("tamtam", "탐탐", "tamtam");
         this.user2 = new User("tamtam1", "탐탐1", "tamtam1");
         this.user3 = new User("tamtam2", "탐탐2", "tamtam2");
