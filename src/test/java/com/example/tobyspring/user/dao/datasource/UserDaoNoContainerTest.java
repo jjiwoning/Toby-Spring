@@ -4,20 +4,17 @@ import com.example.tobyspring.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 import java.sql.SQLException;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest // 스프링 테스트 적용
-@DirtiesContext // 테스트 메서드에서 어플리케이션 컨텍스트의 구성이나 상태를 변경한다는 것을 알려주는 역할을 하는 어노테이션
-class UserDaoTest {
+// 테스트 코드에 직접 오브젝트를 만들고 DI해서 사용하는 테스트
+public class UserDaoNoContainerTest {
 
-    @Autowired // 스프링 테스트를 넣어두면 현재 설정 정보를 바탕으로 자동으로 주입됨
     private UserDao userDao;
     private User user1;
     private User user2;
@@ -27,6 +24,15 @@ class UserDaoTest {
     // User에 대한 픽스처(테스트를 수행하는데 필요한 정보나 오브젝트)를 미리 만들어둘 수 있다.
     @BeforeEach
     private void setUp() {
+        SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+
+        dataSource.setDriverClass(org.h2.Driver.class);
+        dataSource.setUrl("jdbc:h2:tcp://localhost/~/tobyspring");
+        dataSource.setUsername("sa");
+        dataSource.setPassword("");
+
+        userDao = new UserDao(dataSource);
+
         this.user1 = new User("tamtam", "탐탐", "tamtam");
         this.user2 = new User("tamtam1", "탐탐1", "tamtam1");
         this.user3 = new User("tamtam2", "탐탐2", "tamtam2");
@@ -74,4 +80,5 @@ class UserDaoTest {
         assertThatThrownBy(() -> userDao.get("ex"))
                 .isInstanceOf(EmptyResultDataAccessException.class);
     }
+
 }
