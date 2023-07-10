@@ -1,4 +1,4 @@
-package com.example.tobyspring.user.dao.template;
+package com.example.tobyspring.user.dao.template.template_method;
 
 import com.example.tobyspring.user.domain.User;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -9,11 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDao {
+public abstract class UserDaoAbstract {
 
     private DataSource dataSource;
 
-    public UserDao(DataSource dataSource) {
+    public UserDaoAbstract(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -94,11 +94,7 @@ public class UserDao {
 
     }
 
-    private PreparedStatement makeStatement(Connection connection) throws SQLException {
-        PreparedStatement ps;
-        ps = connection.prepareStatement("delete from users");
-        return ps;
-    }
+    abstract protected PreparedStatement makeStatement(Connection connection) throws SQLException;
 
     public int getCount() throws SQLException {
         Connection conn = dataSource.getConnection();
