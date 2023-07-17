@@ -10,40 +10,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * 내부 클래스를 활용하여 전략 클래스를 줄이는 방법
+ * 익명 내부 클래스를 활용하여 전략 클래스를 줄이고 코드까지 줄이는 방법
  */
-public class UserDaoStrategyV3 {
+public class UserDaoStrategyV4 {
     private DataSource dataSource;
 
-    public UserDaoStrategyV3(DataSource dataSource) {
+    public UserDaoStrategyV4(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     public void add(final User user) throws SQLException {
-        class AddStatement implements StatementStrategy {
+        jdbcContextWithStatementStrategy(
+                connection -> {
+                    PreparedStatement ps = connection.prepareStatement("insert into users(id, name, password) values ?, ?, ?");
+                    ps.setString(1, user.getId());
+                    ps.setString(2, user.getName());
+                    ps.setString(3, user.getPassword());
 
-            private final User user;
-
-            public AddStatement(User user) {
-                this.user = user;
-            }
-
-            @Override
-            public PreparedStatement makePrepareStatement(Connection c) throws SQLException {
-                PreparedStatement pstmt = c.prepareStatement(
-                        "insert into users(id, name, password) values (?, ?, ?)"
-                );
-
-                pstmt.setString(1, user.getId());
-                pstmt.setString(2, user.getName());
-                pstmt.setString(3, user.getPassword());
-
-                return pstmt;
-            }
-        }
-
-        StatementStrategy st = new AddStatement(user);
-        jdbcContextWithStatementStrategy(st);
+                    return ps;
+                }
+        );
     }
 
     public User get(String id) throws SQLException {
