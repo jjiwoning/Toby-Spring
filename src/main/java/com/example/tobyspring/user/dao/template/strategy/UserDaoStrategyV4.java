@@ -60,9 +60,8 @@ public class UserDaoStrategyV4 {
 
     public void deleteAll() throws SQLException {
         jdbcContextWithStatementStrategy(
-                connection -> {
+                connection ->
                     connection.prepareStatement("delete from users")
-                }
         );
     }
 
