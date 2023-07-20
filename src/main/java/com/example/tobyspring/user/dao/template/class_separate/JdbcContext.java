@@ -1,4 +1,4 @@
-package com.example.tobyspring.user.dao.template.class_seperate;
+package com.example.tobyspring.user.dao.template.class_separate;
 
 import com.example.tobyspring.user.dao.template.strategy.StatementStrategy;
 
