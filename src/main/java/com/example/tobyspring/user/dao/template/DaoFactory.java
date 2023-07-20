@@ -1,5 +1,7 @@
 package com.example.tobyspring.user.dao.template;
 
+import com.example.tobyspring.user.dao.template.class_separate.JdbcContext;
+import com.example.tobyspring.user.dao.template.class_separate.UserDaoClassSeparate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
@@ -24,5 +26,15 @@ public class DaoFactory {
         dataSource.setPassword("");
 
         return dataSource;
+    }
+
+    @Bean
+    public UserDaoClassSeparate userDaoClassSeparate() {
+        return new UserDaoClassSeparate(jdbcContext());
+    }
+
+    @Bean
+    public JdbcContext jdbcContext() {
+        return new JdbcContext(dataSource());
     }
 }
