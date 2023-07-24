@@ -59,10 +59,7 @@ public class UserDaoStrategyV4 {
     }
 
     public void deleteAll() throws SQLException {
-        jdbcContextWithStatementStrategy(
-                connection ->
-                    connection.prepareStatement("delete from users")
-        );
+        executeQuery("delete from users");
     }
 
     public void jdbcContextWithStatementStrategy(StatementStrategy stmt) throws SQLException {
@@ -106,5 +103,12 @@ public class UserDaoStrategyV4 {
         conn.close();
 
         return count;
+    }
+
+    // 변하지 않는 부분을 분리시킨 deleteAll() 메서드
+    private void executeQuery(final String query) throws SQLException {
+        this.jdbcContextWithStatementStrategy(
+                c -> c.prepareStatement(query)
+        );
     }
 }
