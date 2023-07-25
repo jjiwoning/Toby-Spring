@@ -32,9 +32,7 @@ public class UserDaoClassSeparate {
     }
 
     public void deleteAll() throws SQLException {
-        jdbcContext.workWithStatementStrategy(
-                connection -> connection.prepareStatement("delete from users")
-        );
+        jdbcContext.executeQuery("delete from users");
     }
 
 }
